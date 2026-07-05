@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: practice_crm_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Suharik15022006
+      POSTGRES_DB: practice_crm
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    container_name: practice_crm_redpanda
+    restart: always
+    ports:
+      - "9092:9092"
+    command:
+      - redpanda
+      - start
+      - --mode dev-container
+      - --kafka-addr plaintext://0.0.0.0:29092,outside://0.0.0.0:9092
+      - --advertise-kafka-addr plaintext://redpanda:29092,outside://localhost:9092
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
+
+  console:
+    image: docker.redpanda.com/redpandadata/console:latest
+    container_name: practice_crm_console
+    restart: always
+    ports:
+      - "19082:8080"
+    environment:
+      KAFKA_BROKERS: redpanda:29092
+    depends_on:
+      - redpanda
+
+volumes:
+  postgres_data:
+  redpanda_data:
