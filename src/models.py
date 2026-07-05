@@ -6,7 +6,7 @@ from sqlalchemy import String, Boolean, JSON, Enum, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from database import Base
 
-class LeadStatus(enum.Enum):
+class LeadStatus(str, enum.Enum):
     new = "new"
     approved = "approved"
     rejected = "rejected"
@@ -33,6 +33,6 @@ class OutboxEvent(Base):
 class InboundEvents(Base):
     __tablename__ = "inbound_events"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)
     event_type: Mapped[str]
 
