@@ -32,3 +32,36 @@ async def get_lead(lead_id: uuid.UUID):
                 )
 
     return lead
+
+@app.post("/leads", response_model=LeadResponseSchema)
+async def create_lead(lead: LeadCreateSchema):
+    lead_id = uuid.uuid4()
+
+    async with async_session() as session:
+        async with session.begin():
+            new_lead = LeadModel(
+                id=lead_id,
+                name=lead.name,
+                phone=lead.phone,
+                source=lead.source,
+                comment=lead.comment
+            )
+            session.add(new_lead)
+
+            kafka_payload = {
+                "lead_id": str(lead_id),
+                "name": lead.name,
+                "phone": lead.phone,
+                "source": lead.source
+            }
+
+            outbox_event = OutboxEventModel(
+                event_id=uuid.uuid4(),
+                event_type="lead_created.v1",
+                aggregate_id=str(lead_id),
+                occurred_at=datetime.now(),
+                payload=kafka_payload
+            )
+            session.add(outbox_event)
+
+    return new_lead

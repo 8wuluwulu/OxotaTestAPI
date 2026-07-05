@@ -29,6 +29,7 @@ class OutboxEventModel(Base):
     aggregate_id: Mapped[str]
     occurred_at: Mapped[datetime] = mapped_column(default=datetime.now)
     payload: Mapped[dict[str, Any]] = mapped_column(JSON)
+    is_published: Mapped[bool] = mapped_column(default=False)
 
 class InboundEventsModel(Base):
     __tablename__ = "inbound_events"

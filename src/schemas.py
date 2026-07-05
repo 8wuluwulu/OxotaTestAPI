@@ -1,7 +1,7 @@
 import uuid
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
-from models import LeadStatus
+from src.models import LeadStatus
 
 class LeadCreateSchema(BaseModel):
     name: str
