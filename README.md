@@ -49,6 +49,21 @@ python -m src.send_test_moderation
 ```
 Скрипт предложит ввести UUID заявки, после чего сам отправит нужное событие в Kafka.
 
+#### Пример JSON-события для ручной отправки в Kafka
+```json
+{
+  "event_id": "d3b07384-d113-4956-a5e2-aa5898b3f289",
+  "event_type": "lead_moderation_finished.v1",
+  "aggregate_id": "8fa53828-5695-46c5-bf7d-2b3671a566a7",
+  "occurred_at": "2026-07-06T00:35:00Z",
+  "payload": {
+    "lead_id": "8fa53828-5695-46c5-bf7d-2b3671a566a7",
+    "approved": true,
+    "reason": null
+  }
+}
+```
+
 #### Что сделано:
   
 1. Разработано асинхронное FastAPI API с ручками создания заявки ( POST ) и получения по ID ( GET ).
@@ -58,7 +73,7 @@ python -m src.send_test_moderation
 5. Настроен файл docker-compose.yml  (PostgreSQL, Redpanda в качестве Kafka-брокера и Redpanda Console).
 6. Написан скрипт для ручной отправки тестовых событий в Kafka.
 
-#### Что бы я улучшил дальше (Backlog):
+#### Что бы я улучшил дальше:
 
 1. Валидация данных: Добавил бы строгую валидацию номера телефона в Pydantic-схему (например, проверку регулярным выражением на формат  +7).
 3. Покрытие тестами: Написал бы тесты с использованием библиотеки pytest-asyncio.
