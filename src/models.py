@@ -21,7 +21,7 @@ class LeadModel(Base):
     comment: Mapped[Optional[str]] = mapped_column(String(200))
     status: Mapped[LeadStatus] = mapped_column(default=LeadStatus.new)
 
-class OutboxEvent(Base):
+class OutboxEventModel(Base):
     __tablename__ = "outbox"
 
     event_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -30,7 +30,7 @@ class OutboxEvent(Base):
     occurred_at: Mapped[datetime] = mapped_column(default=datetime.now)
     payload: Mapped[dict[str, Any]] = mapped_column(JSON)
 
-class InboundEvents(Base):
+class InboundEventsModel(Base):
     __tablename__ = "inbound_events"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)

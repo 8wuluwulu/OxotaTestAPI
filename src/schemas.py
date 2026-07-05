@@ -18,11 +18,3 @@ class LeadResponseSchema(BaseModel):
     status: LeadStatus
 
     model_config = ConfigDict(from_attributes=True)
-
-class ErrorDetails(BaseModel):
-    code: str
-    message: str
-    correlation_id: str
-
-class ErrorResponseSchema(BaseModel):
-    error: ErrorDetails
