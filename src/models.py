@@ -2,9 +2,9 @@ import uuid
 import enum
 from typing import Any, Optional
 from datetime import datetime
-from sqlalchemy import String, UUID
+from sqlalchemy import String, UUID, JSON
 from sqlalchemy.orm import Mapped, mapped_column
-from database import Base
+from src.database import Base
 
 class LeadStatus(str, enum.Enum):
     new = "new"
@@ -28,7 +28,7 @@ class OutboxEvent(Base):
     event_type: Mapped[str]
     aggregate_id: Mapped[str]
     occurred_at: Mapped[datetime] = mapped_column(default=datetime.now)
-    payload: Mapped[dict[str, Any]]
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON)
 
 class InboundEvents(Base):
     __tablename__ = "inbound_events"
