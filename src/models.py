@@ -1,8 +1,8 @@
 import uuid
 import enum
 from typing import Any, Optional
-from datetime import datetime, timezone
-from sqlalchemy import String, Boolean, JSON, Enum, UUID
+from datetime import datetime
+from sqlalchemy import String, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from database import Base
 
