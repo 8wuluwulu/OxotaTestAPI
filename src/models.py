@@ -30,4 +30,9 @@ class OutboxEvent(Base):
     occurred_at: Mapped[datetime] = mapped_column(default=datetime.now)
     payload: Mapped[dict[str, Any]]
 
+class InboundEvents(Base):
+    __tablename__ = "inbound_events"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    event_type: Mapped[str]
 
