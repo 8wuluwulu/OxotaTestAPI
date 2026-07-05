@@ -19,11 +19,9 @@ async def send_test_event():
         
     approved_input = input("Одобрить лид? (y - да, n - нет): ").strip().lower()
     approved = approved_input == 'y'
-    
-    # Генерируем уникальный ID для события модерации
+
     event_id = uuid.uuid4()
-    
-    # Формируем структуру события строго по требованиям ТЗ (пункт 4)
+
     event_payload = {
         "event_id": str(event_id),
         "event_type": "lead_moderation_finished.v1",
@@ -37,8 +35,7 @@ async def send_test_event():
     }
     
     value_bytes = json.dumps(event_payload).encode("utf-8")
-    
-    # Отправляем в топик, который слушает наш консьюмер
+
     await producer.send_and_wait("lead_moderation.events.v1", value=value_bytes)
     print(f"\nУспешно отправлено событие в Kafka!")
     print(f"event_id: {event_id}")
